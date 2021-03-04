@@ -19,10 +19,10 @@ BEGIN
         dbms_output.put_line('____  _________________ _____________________  __________________________');
         dbms_output.put_line(' ');
 
-        FOR vers_row IN (SELECT ID, action, action_time, VERSION FROM SYS.REGISTRY$HISTORY) LOOP
+        FOR vers_row IN (SELECT DISTINCT ID, action_time, VERSION FROM SYS.REGISTRY$HISTORY) LOOP
                 ROWNUM := ROWNUM + 1;
-                dbms_output.put_line(RPAD(ROWNUM, 4) || ' ' || RPAD(vers_row.ACTION_TIME, 17) || ' ' ||
-                                     RPAD(' ', 21) || ' ' || RPAD(vers_row.VERSION, 26));
+                dbms_output.put_line(RPAD(ROWNUM, 5) || ' ' || RPAD(vers_row.ACTION_TIME, 17) || ' ' ||
+                                     RPAD(' ', 22) || ' ' || RPAD(vers_row.VERSION, 28));
         END LOOP;
 	END IF;
 END show_info;
