@@ -6,6 +6,7 @@ CREATE PROCEDURE show_info
 IS
     VERS VARCHAR(30) := '';
     ROWNUM INT := 0;
+    PREV_VERS VARCHAR(30):= '-';
 
 BEGIN
     SELECT version into VERS from V$INSTANCE;
@@ -19,10 +20,11 @@ BEGIN
         dbms_output.put_line('____  _________________ _____________________  __________________________');
         dbms_output.put_line(' ');
 
-        FOR vers_row IN (SELECT DISTINCT ID, action_time, VERSION FROM SYS.REGISTRY$HISTORY) LOOP
+        FOR vers_row IN (SELECT DISTINCT ID, action_time, VERSION FROM SYS.REGISTRY$HISTORY ORDER BY ACTION_TIME) LOOP
                 ROWNUM := ROWNUM + 1;
                 dbms_output.put_line(RPAD(ROWNUM, 5) || ' ' || RPAD(vers_row.ACTION_TIME, 17) || ' ' ||
-                                     RPAD(' ', 22) || ' ' || RPAD(vers_row.VERSION, 28));
+                                     RPAD(PREV_VERS, 22) || ' ' || RPAD(vers_row.VERSION, 28));
+                PREV_VERS := vers_row.VERSION;
         END LOOP;
 	END IF;
 END show_info;
