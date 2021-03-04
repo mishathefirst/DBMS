@@ -22,7 +22,7 @@ BEGIN
 
         FOR vers_row IN (SELECT DISTINCT ID, action_time, VERSION FROM SYS.REGISTRY$HISTORY ORDER BY ACTION_TIME) LOOP
                 ROWNUM := ROWNUM + 1;
-                dbms_output.put_line(RPAD(ROWNUM, 5) || ' ' || RPAD(vers_row.ACTION_TIME, 17) || ' ' ||
+                dbms_output.put_line(RPAD(ROWNUM, 5) || ' ' || RPAD(cast(vers_row.ACTION_TIME as date), 17) || ' ' ||
                                      RPAD(PREV_VERS, 22) || ' ' || RPAD(vers_row.VERSION, 28));
                 PREV_VERS := vers_row.VERSION;
         END LOOP;
