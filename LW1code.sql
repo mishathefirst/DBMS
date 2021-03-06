@@ -7,6 +7,8 @@ IS
     VERS VARCHAR(30) := '';
     ROWNUM INT := 0;
     PREV_VERS VARCHAR(30):= '-';
+    ALL_SESS VARCHAR(30) := '';
+    USER_SESS VARCHAR(30) := '';
 
 BEGIN
     SELECT version into VERS from V$INSTANCE;
@@ -27,6 +29,10 @@ BEGIN
                 PREV_VERS := vers_row.VERSION;
         END LOOP;
 	END IF;
+    SELECT COUNT(*) INTO ALL_SESS FROM V$SESSION WHERE STATUS = 'ACTIVE';
+    SELECT COUNT(USERNAME) INTO USER_SESS FROM V$SESSION WHERE STATUS = 'ACTIVE';
+    DBMS_OUTPUT.PUT_LINE('Количество активных сессий: ' || ALL_SESS);
+    DBMS_OUTPUT.PUT_LINE('Из них клиентов: ' || USER_SESS);
 END show_info;
 /
 
