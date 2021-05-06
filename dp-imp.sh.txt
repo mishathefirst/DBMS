@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export ORACLE_SID=s265085
+export PATH=$ORACLE_HOME/bin:$PATH
+
+USER=SYSTEM
+PASSWORD=databasepwd
+env
+
+impdp $USER/$PASSWORD full=y directory=DATAPUMP_DIR dumpfile=$1
