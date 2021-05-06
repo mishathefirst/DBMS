@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export ORACLE_SID=s265085
+export PATH=$ORACLE_HOME/bin:$PATH
+
+USER=SYSTEM
+PASSWORD=databasepwd
+env
+
+DATE=$(date +"%Y-%m-%d#%H-%M")
+
+exp $USER/$PASSWORD file=/u01/rvr81/dumps/expimp/${DATE}_${ORACLE_SID}.dmp \
+log=/u01/rvr81/dumps/expimp/${DATE}_${ORACLE_SID}.log
+
+scp /u01/rvr81/dumps/expimp/${DATE}_${ORACLE_SID}.dmp oracle@db103:/u01/rvr81/dumps/expimp/${DATE}_${ORACLE_SID}.dmp
+
+ssh oracle@db103 "/u01/nogovitsynscripts/imp_script.sh /u01/rvr81/dumps/expimp/${DATE}_${ORACLE_SID}.dmp
+ 
